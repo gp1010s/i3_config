@@ -5,7 +5,6 @@
 # this file and re-run i3-config-wizard(1).
 #
 
-
 set $black        #282828
 set $darkblack    #1d2021
 set $darkwhite    #ffffff
@@ -19,14 +18,13 @@ set $transparent  #0000E5
 set $gray_green	  #253941
 
 set $mod Mod4
-
 #font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
 # The font above is very space-efficient, that is, it looks good, sharp and
 # clear in small sizes. However, if you need a lot of unicode glyphs or
 # right-to-left text rendering, you should instead use pango for rendering and
 # chose a FreeType font, such as:
-font pango:DejaVu Sans Mono 10, FontAwesome 9
-
+#font pango:DejaVu Sans Mono 10, FontAwesome 9
+font pango:DejaVu Sans Mono 10
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
@@ -38,8 +36,8 @@ bindsym $mod+Shift+q kill
 
 # start dmenu (a program launcher)
 # bindsym $mod+d exec --no-startup-id rofi -show run -font "Monospace Bold 18" -m -1 -fullscreen -padding 300 -hide-scrollbar
-# bindsym $mod+d exec --no-startup-id i3-dmenu-desktop --dmenu="dmenu -b -nb '#253941' -sb '#a5876d' -sf '#010101' -fn 'Terminus-11' -l 10"
-bindsym $mod+d exec --no-startup-id i3-dmenu-desktop --dmenu="dmenu -b -nb '#3399ff' -sb '#a5876d' -sf '#010101' -fn 'Terminus-11' -l 10"
+ bindsym $mod+d exec --no-startup-id i3-dmenu-desktop --dmenu="dmenu -b -nb '#253941' -sb '#a5876d' -sf '#010101' -fn 'Terminus-11' -l 10"
+#bindsym $mod+d exec --no-startup-id i3-dmenu-desktop --dmenu="dmenu -b -nb '#92958e' -sb '#a5876d' -sf '#010101' -fn 'Terminus-11' -l 10"
 # ERROR: Repository not found.
 
 # There also is the (new) i3-dmenu-desktop which only displays applications
@@ -155,11 +153,12 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 bar {
-	font	pango:DejaVu Sans Mono 9, FontAwesome 8
+	font	pango:Monopace 8, FontAwesome 8
         position top
 	strip_workspace_number yes	
-	i3bar_command i3bar
-   	colors {
+   	status_command i3status --config ~/.i3/i3status.conf
+#	status_command i3status
+	colors {
 		background #253941
 		statusline #9e958e
 		separator  #081419
@@ -172,14 +171,12 @@ bar {
 
 #:::::::::::::::: MARCO DE VENTANA ::::::::::::::::::#
 ################################################################
-# class           		 border  backgr  text   indicator child_border 
-client.focused		 	#1d3037 #1d3037 #ffffff  #ffffff   #1d3037
-client.focused_inactive 	#1d2121 #1d2121 #a1a1a1  #484e50   #1d2121
-client.unfocused 		#272727 #272727 #fdfdfd  #bfbfbf   #272727	
-client.urgent   		#4a4b4c #4a4b4c #fdfdfd  #fbfbfb   #4a4c4b
-client.placeholder     		#000000 #0c0c0c #ffffff  #000000   #0c0c0c
-
-client.background       	#111111
+# class                 border  backgr. text    indi    child_border
+client.focused          #4c7899 #285577 #ffffff #2e9ef4 #285577
+client.focused_inactive #332233 #5f676a #ffffff #484e50 #5f676a
+client.unfocused        #333333 #222222 #888888 #292d2e #222222
+client.urgent           #2f343a #900000 #ffffff #900000 #900000
+client.placeholder      #000000 #0c0c0c #ffffff #000000 #0c0c0c
 ################################################################
 
 bindsym $mod+Shift+x 		exec i3lock
@@ -199,46 +196,17 @@ mode "$mode_system" {
 }
 bindsym $mod+Shift+e mode "$mode_system"
 
-#::::::::::::::::::: Settings for i3-gaps :::::::::::::::::::::#
-################################################################
-
-mode "$mode_gaps" {
-        bindsym o      mode "$mode_gaps_outer"
-        bindsym i      mode "$mode_gaps_inner"
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
-}
-mode "$mode_gaps_inner" {
-        bindsym plus  gaps inner current plus 5
-        bindsym minus gaps inner current minus 5
-        bindsym 0     gaps inner current set 0
-
-        bindsym Shift+plus  gaps inner all plus 5
-        bindsym Shift+minus gaps inner all minus 5
-        bindsym Shift+0     gaps inner all set 0
-
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
-}
-mode "$mode_gaps_outer" {
-        bindsym plus  gaps outer current plus 5
-        bindsym minus gaps outer current minus 5
-        bindsym 0     gaps outer current set 0
-
-        bindsym Shift+plus  gaps outer all plus 5
-        bindsym Shift+minus gaps outer all minus 5
-        bindsym Shift+0     gaps outer all set 0
-
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
+exec --no-startup-id nm-applet
 #Pulse Audio controls
-bindsym XF86AudioRaiseVolume 	exec --no-startup-id pactl set-sink-volume 0 -- +10%
-bindsym XF86AudioLowerVolume 	exec --no-startup-id pactl set-sink-volume 0 -- -10%
-bindsym XF86AudioMute		exec --no-startup-id pactl set-sink-mute 0 toggle
+bindsym XF86AudioRaiseVolume    exec --no-startup-id pactl set-sink-volume 0 -- +10%
+bindsym XF86AudioLowerVolume    exec --no-startup-id pactl set-sink-volume 0 -- -10%
+bindsym XF86AudioMute           exec --no-startup-id pactl set-sink-mute 0 toggle
 
 # Screen brightness controls
 bindsym XF86MonBrightnessUp exec  xbacklight -inc 20
 bindsym XF86MonBrightnessDown exec  xbacklight -dec 20
 
-exec --no-startup-id nm-applet
+#::::::::::::::::::: Settings for i3-gaps :::::::::::::::::::::#
+################################################################
+
 #exec --no-startup-id i3-msg 'workspace $tag1; exec /usr/bin/firefox; workspace $tag2; exec gnome-terminal; workspace $tag3; exec thunderbird'
